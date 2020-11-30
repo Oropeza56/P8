@@ -28,7 +28,7 @@ class Producto{
 	}
 
 	public String toString(){
-		return "Producto: "+nombre+"\nPrecio: "+precio;
+		return "\nNombre: "+nombre+"\nPrecio: "+precio;
 	}
 }
 
@@ -47,12 +47,22 @@ class Papeleria extends Producto{
 		else
 			tamanio="Pliego";
 	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"\nTamanio: "+tamanio+"\nCant Hojas: "+cantHojas+"\nColor: "+color;
+	}
 }
 
 class DeEscritura extends Producto{
 	String tipopunta;
 	String material;
 	String formapunta;
+
+	@Override
+	public String toString() {
+		return super.toString()+"\nTipo Punta: "+tipopunta+"\nMaterial: "+material+"\nForma Punta: "+formapunta;
+	}
 }
 
 class HerramientasComputo extends Producto{
@@ -68,6 +78,10 @@ class Cuaderno extends Papeleria{
 		this.color = color;
 		this.cantHojas = cantHojas;
 		defTamanoPapel(alto, ancho);
+	}
+	@Override
+	public String toString() {
+		return super.toString();
 	}
 }
 
@@ -90,6 +104,11 @@ class Pluma extends DeEscritura{
 		nombre = "Pluma";
 		precio = 10f;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"\nColor: "+color;
+	}
 }
 
 class Lapiz extends DeEscritura{
@@ -100,6 +119,11 @@ class Lapiz extends DeEscritura{
 		tipopunta = tipoPunta;
 		nombre = "Lapiz";
 		precio = 15f;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"\nColor: "+color;
 	}
 }
 
@@ -113,6 +137,11 @@ class Marcador extends DeEscritura{
 		nombre = "Marcador";
 		precio = 20f;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"\nUso: "+uso+"\nColor: "+color;
+	}
 }
 
 class Calculadora extends HerramientasComputo{
@@ -122,6 +151,11 @@ class Calculadora extends HerramientasComputo{
 		this.marca = marca;
 		precio = 500f;
 		nombre = "Calculadora";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString()+"\nMarca: "+marca;
 	}
 }
 
@@ -134,6 +168,11 @@ class Computadora extends HerramientasComputo{
 		this.color = color;
 		precio = 3600f;
 		nombre = "Computadora";
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "\nSO: "+SO+"\nColor: "+color;
 	}
 }
 
@@ -171,7 +210,7 @@ class Proveedor{
 
 class CarritoCompras{
 
-	HashMap<String, Float> utiles = new HashMap <String, Float> ();	
+	HashMap<String, Producto> utiles = new HashMap <String, Producto> ();	
 	Cliente cliente;
 	float costoTotal;
 	//Producto articulos[];
@@ -187,7 +226,7 @@ class CarritoCompras{
 			if(p.verificaDisponibilidad(1)){
 				/*articulos[cont]=p;
 				cont++;*/
-				utiles.put(p.nombre , p.precio);
+				utiles.put(p.nombre , p);
 
 				p.decrementarStock(1);
 			}	
@@ -201,32 +240,25 @@ class CarritoCompras{
 		for(String i : utiles.keySet()){
 			if(i == p){
 				utiles.remove(i);
-				recorreCarrito(i);
 				//cont--;
 			}
-		}
-	}
-
-	void recorreCarrito(String index){
-		for(String i : utiles.keySet()){
-				//articulos[i]=articulos[i+1];
-			System.out.println (utiles.get(i));
 		}
 	}
 
 	void calcularCostoCarrito(){
 		costoTotal=0;
 		for(String i : utiles.keySet()){
-			costoTotal = utiles.get(i) + costoTotal;
+			costoTotal = utiles.get(i).precio + costoTotal;
 		}
 	}
 
 	void mostrarCarrito(){
 
 		System.out.println("Carrito de "+cliente.nombre+":\n");
-
 		for(String i : utiles.keySet()){
-			System.out.println("Product."+ i + "$" + utiles.get(i) );
+			System.out.println("-----------------------------------------");
+			System.out.println("ID: "+ i + " --> " + utiles.get(i) );
+			System.out.println("-----------------------------------------");
 		}
 	}
 
@@ -376,7 +408,8 @@ class TiendaOnline{
 					carro.calcularCostoCarrito();
 					System.out.println("EL TOTAL DE SU COMPRA ES:" + carro.costoTotal);
 					continue;
-				
+				case 5:
+					break;
 				default:
 					System.out.println("Opcion invalida.");
 			}
@@ -385,8 +418,3 @@ class TiendaOnline{
 	}
 
 }
-	
-
-
-
-
