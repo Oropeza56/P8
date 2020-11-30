@@ -236,12 +236,8 @@ class CarritoCompras{
 	}
 
 	void quitardelCarrito(String p){
-
-		for(String i : utiles.keySet()){
-			if(i == p){
-				utiles.remove(i);
-				//cont--;
-			}
+		if(utiles.containsKey(p)){
+			utiles.remove(p);
 		}
 	}
 
